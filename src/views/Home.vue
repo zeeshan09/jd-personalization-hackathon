@@ -1,8 +1,8 @@
 <template>
-  <div class="container" v-if="!jobposts || !jobposts.length">
+  <div v-if="!jobposts || !jobposts.length">
     <div class="row">
       <div class="col">
-        <h1>All Job posts</h1>
+        <h2>All Job posts</h2>
         <div class="text-center">
           <img
             class="my-4 img-fluid"
@@ -19,11 +19,17 @@
       </div>
     </div>
   </div>
-  <div class="container" v-else>
+  <div v-else>
     <div class="d-flex justify-content-between">
-      <div><h1>All Job posts</h1></div>
+      <h2>All Job posts</h2>
       <div>
-        <button class="btn btn-primary" type="button">Create JD</button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          @click="$router.push('job')"
+        >
+          Create JD
+        </button>
       </div>
     </div>
     <div class="row">
@@ -48,7 +54,8 @@
   </div>
 </template>
 
-<style>
+<style scoped lang="scss">
+@import "../App.scss";
 .jobpost-box {
   border-radius: 10px;
   box-shadow: 0px 1px 16px rgba(201, 210, 226, 0.4);

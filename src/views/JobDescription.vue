@@ -159,9 +159,6 @@ export default {
 <style scoped lang="scss">
 @import "../App.scss";
 .job-description {
-  background: $background;
-  color: #14142a;
-  padding: 50px;
   .content {
     height: 100%;
     .description-section {
