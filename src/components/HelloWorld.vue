@@ -130,7 +130,7 @@ export default class HelloWorld extends Vue {
     console.log("value of jobPostings", this.jobPostings);
     this.getJobPostings({
       limit: 20,
-      startIndex: 0
+      startIndex: 0,
     });
     // this.store.dispatch('getJobPostings');
     console.log("after update-----", this.jobPostings);
