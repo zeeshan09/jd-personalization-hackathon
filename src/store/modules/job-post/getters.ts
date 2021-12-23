@@ -7,7 +7,7 @@ export type Getters = {
   jobPostingsTotalCount(state: State): number;
   jobPostingsError(state: State): any;
 };
- 
+
 export const getters: GetterTree<State, State> & Getters = {
   loadingJobPostings(state) {
     return state.loadingJobPostings;

@@ -1,7 +1,7 @@
 export type State = {
   loadingJobPostings: boolean;
   jobPostings: any[];
-  jobPostingsTotalCount: number
+  jobPostingsTotalCount: number;
   jobPostingsError: any;
 };
 
