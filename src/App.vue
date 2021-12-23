@@ -3,6 +3,6 @@
 </template>
 
 <style lang="scss">
-@import url(./App.scss);
-@import url(./assets/scss/main.scss);
+@import "./App.scss";
+@import "./assets/scss/main.scss";
 </style>
