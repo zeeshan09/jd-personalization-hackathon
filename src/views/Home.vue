@@ -26,7 +26,7 @@
         <button
           class="btn btn-primary"
           type="button"
-          @click="$router.push('job')"
+          @click="$router.push('/job')"
         >
           Create JD
         </button>
@@ -34,14 +34,17 @@
     </div>
     <div class="row">
       <div v-for="jp in jobposts" :key="jp.id" class="col-md-4 my-4">
-        <div class="p-4 bg-white jobpost-box">
-          <h4>{{ jp.jobtitle }}</h4>
+        <div
+          class="p-4 bg-white jobpost-box"
+          @click="$router.push(`/job/${jp.id}`)"
+        >
+          <h4>{{ jp.jobTitle }}</h4>
           <p>
-            {{ jp.shortdesc }}
+            {{ jp.detailedDescription }}
           </p>
           <p>{{ jp.location }}</p>
           <p>
-            {{ jp.description }}
+            {{ jp.briefDescription }}
           </p>
           <hr />
           <div class="d-flex justify-content-between">
@@ -57,85 +60,24 @@
 <style scoped lang="scss">
 @import "../App.scss";
 .jobpost-box {
+  cursor: pointer;
   border-radius: 10px;
   box-shadow: 0px 1px 16px rgba(201, 210, 226, 0.4);
 }
 </style>
 
 <script lang="ts">
-export default {
-  name: "Home",
-  data() {
-    return {
-      jobposts: [
-        {
-          id: 1,
-          jobtitle: "Product designer",
-          shortdesc:
-            "This is a short job description to catch the attention of your target audience. Keep it simple.",
-          location: "Chennai, India",
-          description:
-            "Ideas2it is looking for talented software developers for our Summer 2019 internship program to create a free virtual classroom for the world. Join us on our mission to provide a free world-class education for anyone, anywhere.",
-          jobtype: "Personalised",
-          created: "Created : Yesterday",
-        },
-        {
-          id: 2,
-          jobtitle: "Fullstack Engineer",
-          shortdesc:
-            "This is a short job description to catch the attention of your target audience. Keep it simple.",
-          location: "Chennai, India",
-          description:
-            "Ideas2it is looking for talented software developers for our Summer 2019 internship program to create a free virtual classroom for the world. Join us on our mission to provide a free world-class education for anyone, anywhere.",
-          jobtype: "Personalised",
-          created: "Created : Yesterday",
-        },
-        {
-          id: 3,
-          jobtitle: "Software Engineer",
-          shortdesc:
-            "This is a short job description to catch the attention of your target audience. Keep it simple.",
-          location: "Chennai, India",
-          description:
-            "Ideas2it is looking for talented software developers for our Summer 2019 internship program to create a free virtual classroom for the world. Join us on our mission to provide a free world-class education for anyone, anywhere.",
-          jobtype: "Job post",
-          created: "Created : 2 days ago",
-        },
-        {
-          id: 4,
-          jobtitle: "Software Engineer trainee",
-          shortdesc:
-            "This is a short job description to catch the attention of your target audience. Keep it simple.",
-          location: "Chennai, India",
-          description:
-            "Ideas2it is looking for talented software developers for our Summer 2019 internship program to create a free virtual classroom for the world. Join us on our mission to provide a free world-class education for anyone, anywhere.",
-          jobtype: "Job post",
-          created: "Created : 4 july 2020",
-        },
-        {
-          id: 5,
-          jobtitle: "Fullstack developer",
-          shortdesc:
-            "This is a short job description to catch the attention of your target audience. Keep it simple.",
-          location: "Chennai, India",
-          description:
-            "Ideas2it is looking for talented software developers for our Summer 2019 internship program to create a free virtual classroom for the world. Join us on our mission to provide a free world-class education for anyone, anywhere.",
-          jobtype: "Job post",
-          created: "Created : 22 June 2020",
-        },
-        {
-          id: 6,
-          jobtitle: "Senior marketing designer",
-          shortdesc:
-            "This is a short job description to catch the attention of your target audience. Keep it simple.",
-          location: "Chennai, India",
-          description:
-            "Ideas2it is looking for talented software developers for our Summer 2019 internship program to create a free virtual classroom for the world. Join us on our mission to provide a free world-class education for anyone, anywhere.",
-          jobtype: "Job post",
-          created: "Created : 7 June 2020",
-        },
-      ],
-    };
-  },
-};
+import { Options, Vue } from "vue-class-component";
+import axios from "axios";
+
+export default class Home extends Vue {
+  msg!: string;
+  public jobposts: any = [];
+  mounted() {
+    console.log("home mounted----");
+    axios.get("/api/jobDetails").then((response) => {
+      this.jobposts = response.data;
+    });
+  }
+}
 </script>

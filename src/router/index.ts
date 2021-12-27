@@ -10,8 +10,14 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/job",
+    name: "newJob",
+    component: JobDescription,
+  },
+  {
+    path: "/job/:id",
     name: "job",
     component: JobDescription,
+    props: true,
   },
   {
     path: "/about",

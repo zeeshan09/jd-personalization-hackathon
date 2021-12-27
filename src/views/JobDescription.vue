@@ -2,11 +2,7 @@
   <div class="job-description">
     <div class="d-flex justify-content-between mb-4">
       <h2>Create Job post</h2>
-      <button
-        type="button"
-        class="btn btn-primary"
-        @click="onProceedClick(job)"
-      >
+      <button type="button" class="btn btn-primary" @click="onProceedClick()">
         Proceed
       </button>
     </div>
@@ -19,7 +15,7 @@
             type="text"
             id="title"
             class="form-control"
-            v-model="job.title"
+            v-model="job.jobTitle"
           />
         </div>
         <div class="form-group">
@@ -37,7 +33,7 @@
             type="text"
             id="description"
             class="form-control"
-            v-model="job.description"
+            v-model="job.briefDescription"
           />
         </div>
         <div class="form-group">
@@ -46,12 +42,17 @@
             type="text"
             id="company"
             class="form-control"
-            v-model="job.company"
+            v-model="job.companyName"
           />
         </div>
         <div class="form-group">
           <label for="email">CTA(Call to action)</label>
-          <input type="text" id="cta" class="form-control" v-model="job.cta" />
+          <input
+            type="text"
+            id="cta"
+            class="form-control"
+            v-model="job.callToAction"
+          />
         </div>
         <div class="divider mb-3"></div>
         <div class="d-flex justify-content-between mb-3">
@@ -63,7 +64,7 @@
         </div>
         <div class="form-group">
           <editor
-            v-model="job.detail"
+            v-model="job.detailedDescription"
             api-key="no-api-key"
             :init="{
               height: 450,
@@ -102,11 +103,15 @@
         </div>
         <div class="overview row m-0 mb-4">
           <div class="col-8">
-            <h2 class="mb-3">{{ job.title }}</h2>
-            <div class="mb-3">{{ job.description }}</div>
+            <h2 class="mb-3">{{ job.jobTitle }}</h2>
+            <div class="mb-3">{{ job.briefDescription }}</div>
             <div class="">{{ job.location }}</div>
-            <button v-if="job.cta" type="button" class="btn btn-green mt-5">
-              {{ job.cta }}
+            <button
+              v-if="job.callToAction"
+              type="button"
+              class="btn btn-green mt-5"
+            >
+              {{ job.callToAction }}
             </button>
           </div>
           <div class="col-4">
@@ -117,8 +122,8 @@
             />
           </div>
         </div>
-        <div v-if="job.detail" class="overview row m-0 mb-4">
-          <div v-html="job.detail" />
+        <div v-if="job.detailedDescription" class="overview row m-0 mb-4">
+          <div v-html="job.detailedDescription" />
         </div>
       </div>
     </div>
@@ -126,36 +131,73 @@
 </template>
 
 <script lang="ts">
-// import { Options, Vue } from "vue-class-component";
+import { Options, Vue } from "vue-class-component";
 import Editor from "@tinymce/tinymce-vue";
-export default {
-  data() {
-    return {
-      job: {
-        detail: "",
-        title: "",
-        location: "",
-        description: "",
-        company: "",
-        cta: "",
-        email: "",
-      },
-    };
+import { useRoute } from "vue-router";
+import axios from "axios";
+
+interface Job {
+  briefDescription: string;
+  jobTitle: string;
+  location: string;
+  detailedDescription: string;
+  companyName: string;
+  callToAction: string;
+  email: string;
+}
+@Options({
+  props: {
+    msg: String,
   },
   methods: {
-    onProceedClick(job: any): void {
-      console.log("jobdata----", job);
+    onProceedClick(): void {
+      // const headers = {
+      //   Accept: "application/json",
+      //   withCredentials: "false",
+      //   "content-type": "application/json",
+      // };
+      if (this.id) {
+        axios.put(`/api/jobDetails/${this.id}`, this.job).then((response) => {
+          console.log("res---", response.data);
+        });
+      } else {
+        axios.post(`/api/jobDetails`, this.job).then((response) => {
+          console.log("res---", response.data);
+        });
+      }
     },
   },
   components: {
     editor: Editor,
   },
-};
-// @Options({
-//   components: {},
-// })
-// export default class JobDescription extends Vue {}
+})
+export default class JobDescription extends Vue {
+  // @Action private getJobPostings!: any;
+  // @Getter private jobPostings!: any[];
+  route = useRoute();
+  id = this.route.params.id;
+  msg!: string;
+  public job: Job = {
+    briefDescription: "",
+    jobTitle: "",
+    location: "",
+    detailedDescription: "",
+    companyName: "",
+    callToAction: "",
+    email: "",
+  };
+  mounted() {
+    if (this.id) {
+      console.log("jobid----", this.id);
+      axios.get(`/api/jobDetails/${this.id}`).then((response) => {
+        console.log("res---", response.data);
+        this.job = response.data;
+      });
+    }
+  }
+}
 </script>
+
 <style scoped lang="scss">
 @import "../App.scss";
 .job-description {
