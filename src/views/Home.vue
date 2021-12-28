@@ -69,13 +69,14 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import axios from "axios";
+import globalVar from "../utils/env";
 
 export default class Home extends Vue {
   msg!: string;
   public jobposts: any = [];
   mounted() {
     console.log("home mounted----");
-    axios.get("/api/jobDetails").then((response) => {
+    axios.get(`${globalVar.apiUrl}/jobDetails`).then((response) => {
       this.jobposts = response.data;
     });
   }

@@ -135,6 +135,7 @@ import { Options, Vue } from "vue-class-component";
 import Editor from "@tinymce/tinymce-vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
+import globalVar from "@/utils/env";
 
 interface Job {
   briefDescription: string;
@@ -157,13 +158,17 @@ interface Job {
       //   "content-type": "application/json",
       // };
       if (this.id) {
-        axios.put(`/api/jobDetails/${this.id}`, this.job).then((response) => {
-          console.log("res---", response.data);
-        });
+        axios
+          .put(`${globalVar.apiUrl}/jobDetails/${this.id}`, this.job)
+          .then((response) => {
+            console.log("res---", response.data);
+          });
       } else {
-        axios.post(`/api/jobDetails`, this.job).then((response) => {
-          console.log("res---", response.data);
-        });
+        axios
+          .post(`${globalVar.apiUrl}/jobDetails`, this.job)
+          .then((response) => {
+            console.log("res---", response.data);
+          });
       }
     },
   },
@@ -189,10 +194,12 @@ export default class JobDescription extends Vue {
   mounted() {
     if (this.id) {
       console.log("jobid----", this.id);
-      axios.get(`/api/jobDetails/${this.id}`).then((response) => {
-        console.log("res---", response.data);
-        this.job = response.data;
-      });
+      axios
+        .get(`${globalVar.apiUrl}/jobDetails/${this.id}`)
+        .then((response) => {
+          console.log("res---", response.data);
+          this.job = response.data;
+        });
     }
   }
 }
